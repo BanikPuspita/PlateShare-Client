@@ -16,9 +16,7 @@ const AvailableFoods = () => {
       <h2 className="text-2xl font-bold mb-6 text-center">Available Foods</h2>
 
       {foods.length === 0 ? (
-        <p className="text-center text-gray-500">
-          No food available right now.
-        </p>
+        <p className="text-center text-gray-500">No food available right now.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {foods.map((food) => (
@@ -38,13 +36,9 @@ const AvailableFoods = () => {
                 Expire: {new Date(food.expireDate).toLocaleDateString()}
               </p>
 
-              {/* ✅ Donator Info */}
               <div className="flex items-center gap-2 mt-3">
                 <img
-                  src={
-                    food.donator?.photoURL ||
-                    "https://i.ibb.co/4pDNDk1/avatar.png"
-                  }
+                  src={food.donator?.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
                   alt={food.donator?.name || "Donator"}
                   className="w-8 h-8 rounded-full object-cover"
                 />
@@ -53,9 +47,9 @@ const AvailableFoods = () => {
                 </span>
               </div>
 
-              <Link to={`/request/${food._id}`}>
+              <Link to={`/food/${food._id}`}>
                 <button className="mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition">
-                  Request Now
+                  View Details
                 </button>
               </Link>
             </div>

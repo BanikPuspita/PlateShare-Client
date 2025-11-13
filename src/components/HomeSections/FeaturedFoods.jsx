@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const FeaturedFoods = () => {
   const [foods, setFoods] = useState([]);
@@ -17,45 +18,51 @@ const FeaturedFoods = () => {
       {foods.length === 0 ? (
         <p className="text-center text-gray-500">No featured foods right now.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {foods.map((food) => (
-            <div
-              key={food._id}
-              className="bg-white shadow-md rounded-2xl p-4 flex flex-col"
-            >
-              <img
-                src={food.image}
-                alt={food.name}
-                className="w-full h-48 object-cover rounded-lg"
-              />
-              <h3 className="text-xl font-semibold mt-3">{food.name}</h3>
-              <p className="text-gray-600">{food.quantityText}</p>
-              <p className="text-gray-600">📍 {food.pickupLocation}</p>
-              <p className="text-sm text-gray-500">
-                Expire: {new Date(food.expireDate).toLocaleDateString()}
-              </p>
-
-              {/* ✅ Donator Info */}
-              <div className="flex items-center gap-2 mt-3">
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {foods.map((food) => (
+              <div
+                key={food._id}
+                className="bg-white shadow-md rounded-2xl p-4 flex flex-col"
+              >
                 <img
-                  src={
-                    food.donator?.photoURL ||
-                    "https://i.ibb.co/4pDNDk1/avatar.png"
-                  }
-                  alt={food.donator?.name || "Donator"}
-                  className="w-8 h-8 rounded-full object-cover"
+                  src={food.image}
+                  alt={food.name}
+                  className="w-full h-48 object-cover rounded-lg"
                 />
-                <span className="text-sm text-gray-700">
-                  {food.donator?.name || "Anonymous"}
-                </span>
-              </div>
+                <h3 className="text-xl font-semibold mt-3">{food.name}</h3>
+                <p className="text-gray-600">{food.quantityText}</p>
+                <p className="text-gray-600">📍 {food.pickupLocation}</p>
+                <p className="text-sm text-gray-500">
+                  Expire: {new Date(food.expireDate).toLocaleDateString()}
+                </p>
 
-              <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition">
-                View Details
-              </button>
-            </div>
-          ))}
-        </div>
+                <div className="flex items-center gap-2 mt-3">
+                  <img
+                    src={food.donator?.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                    alt={food.donator?.name || "Donator"}
+                    className="w-8 h-8 rounded-full object-cover"
+                  />
+                  <span className="text-sm text-gray-700">
+                    {food.donator?.name || "Anonymous"}
+                  </span>
+                </div>
+
+                <Link to={`/food/${food._id}`}>
+                  <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-6">
+            <Link to="/available-foods" className="btn btn-primary">
+              Show All
+            </Link>
+          </div>
+        </>
       )}
     </div>
   );
