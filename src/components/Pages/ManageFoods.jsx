@@ -35,7 +35,7 @@ const ManageFoods = () => {
   };
 
   return (
-    <section className="max-w-3xl mx-auto py-16 px-4">
+    <section className="max-w-3xl mx-auto py-32 px-4">
       <h2 className="text-3xl font-bold text-primary mb-8 text-center">
         Manage My Foods
       </h2>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const FeaturedFoods = () => {
   const [foods, setFoods] = useState([]);
@@ -10,6 +11,9 @@ const FeaturedFoods = () => {
       .then((data) => setFoods(data))
       .catch((err) => console.error("Error fetching featured foods:", err));
   }, []);
+
+  const container = { hidden: {}, show: { transition: { staggerChildren: 0.2 } } };
+  const item = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0 } };
 
   return (
     <section className="max-w-[1200px] mx-auto py-16 px-4">
@@ -23,11 +27,17 @@ const FeaturedFoods = () => {
         </p>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            variants={container}
+            initial="hidden"
+            animate="show"
+          >
             {foods.map((food) => (
-              <div
+              <motion.div
                 key={food._id}
                 className="bg-base-100 border border-gray-100 shadow-md hover:shadow-lg transition-all duration-300 rounded-2xl flex flex-col overflow-hidden"
+                variants={item}
               >
                 <div className="w-full h-56 overflow-hidden">
                   <img
@@ -64,9 +74,9 @@ const FeaturedFoods = () => {
                     </button>
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           <div className="text-center mt-10">
             <Link to="/available-foods" className="btn btn-primary">

@@ -16,6 +16,7 @@ import UpdateFood from "./components/Pages/UpdateFood.jsx";
 import MyRequests from "./components/Pages/MyRequests.jsx";
 import RequestFood from "./components/Pages/MyRequests.jsx";
 import ManageFoods from "./components/Pages/ManageFoods.jsx";
+import NotFound from "./components/NotFound/NotFound.jsx";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login></Login>,
+      },
+      {
+        path: "*",
+        element: <NotFound></NotFound>
       },
       {
         path: "/available-foods",

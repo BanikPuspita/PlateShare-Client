@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import bannerImg from "../../assets/plate_banner.jpg"; 
 
 const HeroBanner = () => {
@@ -16,7 +17,12 @@ const HeroBanner = () => {
       ></div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-32 text-center md:text-left flex flex-col md:flex-row items-center md:justify-between gap-8">
-        <div className="text-white max-w-lg">
+        <motion.div
+          className="text-white max-w-lg"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Share Surplus Food. Spread Kindness.
           </h1>
@@ -30,15 +36,20 @@ const HeroBanner = () => {
           >
             View All Foods
           </Link>
-        </div>
+        </motion.div>
 
-        <div className="hidden md:block w-1/2">
+        <motion.div
+          className="hidden md:block w-1/2"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
           <img
             src={bannerImg}
             alt="Community Food Sharing"
             className="rounded-lg shadow-lg"
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

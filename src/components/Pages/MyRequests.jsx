@@ -56,7 +56,7 @@ const MyRequests = () => {
     );
 
   return (
-    <section className="max-w-5xl mx-auto py-16 px-4">
+    <section className="max-w-5xl mx-auto py-36 px-4">
       <h2 className="text-3xl font-bold text-center text-primary mb-8">
         My Food Requests
       </h2>
