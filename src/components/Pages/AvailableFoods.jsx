@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../providers/AuthProvider";
 import { requestFood } from "../../api/requests";
 import { toast } from "react-hot-toast";
+import Loader from "../Loader/Loader";
+ 
 
 const AvailableFoods = () => {
   const { user } = useAuth();
@@ -67,8 +69,9 @@ const AvailableFoods = () => {
     }
   };
 
-  if (loading) return <p className="text-center py-20 text-gray-500">Loading...</p>;
-  if (!foods.length) return <p className="text-center py-20 text-gray-500">No food available right now.</p>;
+  if (loading) return <Loader></Loader>;
+  if (!foods.length)
+    return <p className="text-center py-20 text-gray-500">No food available right now.</p>;
 
   return (
     <section className="max-w-[1200px] mx-auto py-16 px-4">
@@ -93,7 +96,9 @@ const AvailableFoods = () => {
               </div>
 
               <div className="flex flex-col flex-grow p-5">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">{food.name}</h3>
+                <h3 className="text-xl font-semibold text-gray-800 mb-1">
+                  {food.name}
+                </h3>
                 <p className="text-gray-600 text-sm mb-1">{food.quantityText}</p>
                 <p className="text-gray-600 text-sm mb-1">📍 {food.pickupLocation}</p>
                 <p className="text-sm text-gray-500">
@@ -106,7 +111,9 @@ const AvailableFoods = () => {
                     alt={food.donator?.name || "Donator"}
                     className="w-8 h-8 rounded-full object-cover"
                   />
-                  <span className="text-sm text-gray-700">{food.donator?.name || "Anonymous"}</span>
+                  <span className="text-sm text-gray-700">
+                    {food.donator?.name || "Anonymous"}
+                  </span>
                 </div>
 
                 {!isOwner && food.food_status === "Available" && (
@@ -118,8 +125,16 @@ const AvailableFoods = () => {
                   </button>
                 )}
 
-                {isOwner && <p className="mt-auto text-gray-500 text-sm text-center">You own this food</p>}
-                {food.food_status === "donated" && <p className="mt-2 text-red-500 text-center font-semibold">Already donated</p>}
+                {isOwner && (
+                  <p className="mt-auto text-gray-500 text-sm text-center">
+                    You own this food
+                  </p>
+                )}
+                {food.food_status === "donated" && (
+                  <p className="mt-2 text-red-500 text-center font-semibold">
+                    Already donated
+                  </p>
+                )}
               </div>
             </div>
           );
@@ -129,10 +144,15 @@ const AvailableFoods = () => {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
           <div className="bg-white p-6 rounded-2xl w-full max-w-md relative">
-            <button className="absolute top-3 right-3 font-bold text-gray-500" onClick={() => setShowModal(false)}>
+            <button
+              className="absolute top-3 right-3 font-bold text-gray-500"
+              onClick={() => setShowModal(false)}
+            >
               X
             </button>
-            <h3 className="text-xl font-semibold text-primary mb-4">Request This Food</h3>
+            <h3 className="text-xl font-semibold text-primary mb-4">
+              Request This Food
+            </h3>
             <div className="grid gap-3">
               <input
                 name="location"
@@ -156,7 +176,11 @@ const AvailableFoods = () => {
                 className="input input-bordered w-full"
               />
               <button
-                className={`btn w-full ${requestLoading ? "bg-gray-400 cursor-not-allowed" : "btn-success text-white"}`}
+                className={`btn w-full ${
+                  requestLoading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "btn-success text-white"
+                }`}
                 onClick={handleRequest}
                 disabled={requestLoading}
               >

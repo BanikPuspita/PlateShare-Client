@@ -3,10 +3,12 @@ import { useAuth } from "../../providers/AuthProvider";
 import { getMyFoods, deleteFood } from "../../api/foods";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import Loader from "../Loader/Loader";
 
 const ManageFoods = () => {
   const { user } = useAuth();
   const [foods, setFoods] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const fetchMyFoods = async () => {
@@ -15,6 +17,8 @@ const ManageFoods = () => {
       setFoods(mine);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -33,6 +37,8 @@ const ManageFoods = () => {
       toast.error("Failed to delete food");
     }
   };
+
+  if (loading) return <Loader></Loader>;
 
   return (
     <section className="max-w-3xl mx-auto py-32 px-4">
