@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import { useAuth } from "../../providers/AuthProvider";
 import { requestFood } from "../../api/requests";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE || "https://plate-share-server-chi.vercel.app";
 
 const AvailableFoods = () => {
   const { user } = useAuth();

@@ -21,7 +21,7 @@ const AvailableFoods = () => {
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/foods");
+        const res = await fetch("https://plate-share-server-chi.vercel.app/api/foods");
         const data = await res.json();
         setFoods(data);
       } catch (err) {

@@ -15,7 +15,7 @@
 
 // src/api/requests.js
 import { getAuth } from "firebase/auth";
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_BASE || "https://plate-share-server-chi.vercel.app";
 
 async function getToken() {
   const auth = getAuth();

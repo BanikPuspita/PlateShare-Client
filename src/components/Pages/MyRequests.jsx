@@ -20,7 +20,7 @@ const MyRequests = () => {
         }
 
         const token = await user.getIdToken();
-        const res = await fetch("http://localhost:5000/api/requests/my", {
+        const res = await fetch("https://plate-share-server-chi.vercel.app/api/requests/my", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
