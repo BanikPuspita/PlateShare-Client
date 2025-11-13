@@ -52,22 +52,23 @@ export const AuthProvider = ({ children }) => {
   };
 
   const googleSignIn = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    const res = await signInWithPopup(auth, provider);
-    const currentUser = {
-      ...res.user,
-      displayName: res.user.displayName || "User",
-      photoURL: res.user.photoURL || DEFAULT_AVATAR,
-    };
-    setUser(currentUser);
-    toast.success("Logged in with Google");
-    return res.user;
-  } catch (err) {
-    toast.error(err.message);
-    throw err;
-  }
-};
+    try {
+      const provider = new GoogleAuthProvider();
+      const res = await signInWithPopup(auth, provider);
+      const currentUser = {
+        uid: res.user.uid,
+        displayName: res.user.displayName || "User",
+        email: res.user.email,
+        photoURL: res.user.photoURL || DEFAULT_AVATAR,
+      };
+      setUser(currentUser);
+      toast.success("Logged in with Google");
+      return currentUser;
+    } catch (err) {
+      toast.error(err.message);
+      throw err;
+    }
+  };
 
   const logout = async () => {
     try {

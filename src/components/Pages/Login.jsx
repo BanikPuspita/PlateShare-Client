@@ -3,7 +3,7 @@ import { useAuth } from "../../providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
-import { Eye, EyeOff } from "lucide-react"; // Importing Eye icons
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const { login, googleSignIn } = useAuth();
@@ -23,7 +23,7 @@ const Login = () => {
       setTimeout(() => navigate("/"), 1000);
     } catch (err) {
       toast.error(err.message);
-      setLoginError(err.message); // Displaying error message
+      setLoginError(err.message);
       console.log(err);
     }
   };

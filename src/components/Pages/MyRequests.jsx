@@ -56,27 +56,27 @@ const MyRequests = () => {
     );
 
   return (
-    <div className="max-w-5xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold text-center text-green-700 mb-6">
+    <section className="max-w-5xl mx-auto py-16 px-4">
+      <h2 className="text-3xl font-bold text-center text-primary mb-8">
         My Food Requests
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {requests.map((req) => (
           <div
             key={req._id}
-            className="border rounded-lg shadow-md p-4 bg-white hover:shadow-lg transition"
+            className="bg-base-100 border border-gray-100 shadow-md rounded-2xl overflow-hidden hover:shadow-lg transition"
           >
-            <div className="flex gap-4">
+            <div className="flex gap-4 p-4">
               {req.foodImage && (
                 <img
                   src={req.foodImage}
                   alt={req.foodName}
-                  className="w-28 h-28 object-cover rounded"
+                  className="w-28 h-28 object-cover rounded-lg"
                 />
               )}
-              <div>
-                <h3 className="text-lg font-semibold text-green-700">
+              <div className="flex flex-col justify-between">
+                <h3 className="text-lg font-semibold text-primary">
                   {req.foodName}
                 </h3>
                 <p className="text-sm text-gray-600">
@@ -92,15 +92,14 @@ const MyRequests = () => {
                   <strong>Contact:</strong> {req.contactNo}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
-                  Requested on:{" "}
-                  {new Date(req.createdAt).toLocaleDateString()}
+                  Requested on: {new Date(req.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

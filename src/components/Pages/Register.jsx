@@ -3,7 +3,7 @@ import { useAuth } from "../../providers/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
-import { Eye, EyeOff } from "lucide-react"; 
+import { Eye, EyeOff } from "lucide-react";
 
 const Register = () => {
   const { register, googleSignIn } = useAuth();
@@ -21,12 +21,9 @@ const Register = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const validatePassword = (password) => {
-    if (!/[A-Z]/.test(password))
-      return "Password must contain an uppercase letter";
-    if (!/[a-z]/.test(password))
-      return "Password must contain a lowercase letter";
-    if (password.length < 6) 
-      return "Password must be at least 6 characters";
+    if (!/[A-Z]/.test(password)) return "Password must contain an uppercase letter";
+    if (!/[a-z]/.test(password)) return "Password must contain a lowercase letter";
+    if (password.length < 6) return "Password must be at least 6 characters";
     return null;
   };
 
