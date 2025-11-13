@@ -1,18 +1,17 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../providers/AuthProvider";
 import { getMyFoods, deleteFood } from "../../api/foods";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Loader from "../Loader/Loader";
 
-const ManageFoods = ({ refreshTrigger }) => {
+const ManageFoods = () => {
   const { user } = useAuth();
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const fetchMyFoods = useCallback(async () => {
-    setLoading(true);
+  const fetchMyFoods = async () => {
     try {
       const mine = await getMyFoods();
       setFoods(mine);
@@ -21,11 +20,11 @@ const ManageFoods = ({ refreshTrigger }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
     fetchMyFoods();
-  }, [fetchMyFoods, refreshTrigger]); // refreshTrigger will trigger a refetch
+  }, []);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this food?")) return;
@@ -39,7 +38,7 @@ const ManageFoods = ({ refreshTrigger }) => {
     }
   };
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader></Loader>;
 
   return (
     <section className="max-w-3xl mx-auto py-32 px-4">
