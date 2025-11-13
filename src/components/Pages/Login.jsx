@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../providers/AuthProvider";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff } from "lucide-react";
@@ -8,9 +8,14 @@ import { Eye, EyeOff } from "lucide-react";
 const Login = () => {
   const { login, googleSignIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
+
+  // Redirect back to the page user came from, or home if not available
+  const from = location.state?.from?.pathname || "/";
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,7 +25,7 @@ const Login = () => {
     try {
       await login(form.email, form.password);
       toast.success("Logged in successfully");
-      setTimeout(() => navigate("/"), 1000);
+      navigate(from, { replace: true }); // redirect back
     } catch (err) {
       toast.error(err.message);
       setLoginError(err.message);
@@ -31,10 +36,11 @@ const Login = () => {
   const handleGoogle = async () => {
     try {
       await googleSignIn();
-      navigate("/");
       toast.success("Logged in successfully");
+      navigate(from, { replace: true }); // redirect back
     } catch (err) {
       console.log(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -74,7 +80,10 @@ const Login = () => {
           Login
         </button>
       </form>
-      <button onClick={handleGoogle} className="btn btn-outline w-full mt-4">
+      <button
+        onClick={handleGoogle}
+        className="btn btn-outline w-full mt-4 flex items-center justify-center gap-2"
+      >
         <FcGoogle size={20} />
         Login with Google
       </button>
