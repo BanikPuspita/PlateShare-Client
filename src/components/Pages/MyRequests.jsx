@@ -1,98 +1,107 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
-const RequestFood = () => {
-  const { id } = useParams();
+const MyRequests = () => {
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [food, setFood] = useState(null);
-  const [formData, setFormData] = useState({
-    location: "",
-    reason: "",
-    contactNo: "",
-  });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/foods/${id}`)
-      .then((res) => res.json())
-      .then((data) => setFood(data))
-      .catch((err) => console.error("Error fetching food:", err));
-  }, [id]);
+    const fetchRequests = async () => {
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+        if (!user) {
+          alert("Please login first");
+          navigate("/login");
+          return;
+        }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+        const token = await user.getIdToken();
+        const res = await fetch("http://localhost:5000/api/requests/my", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-    try {
-      const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          foodId: id,
-          ...formData,
-        }),
-      });
+        if (!res.ok) {
+          throw new Error("Failed to fetch requests");
+        }
 
-      if (res.ok) {
-        alert("Request sent successfully!");
-        navigate("/");
-      } else {
-        const err = await res.json();
-        alert(err.message || "Failed to send request");
+        const data = await res.json();
+        setRequests(data);
+      } catch (error) {
+        console.error("Error fetching requests:", error);
+        alert("Failed to load your requests.");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      alert("Something went wrong");
-    }
-  };
+    };
 
-  if (!food) return <p className="text-center mt-10">Loading food details...</p>;
+    fetchRequests();
+  }, [navigate]);
+
+  if (loading)
+    return (
+      <p className="text-center mt-10 text-gray-500">Loading your requests...</p>
+    );
+
+  if (requests.length === 0)
+    return (
+      <p className="text-center mt-10 text-gray-600">
+        You haven’t requested any food yet.
+      </p>
+    );
 
   return (
-    <div className="max-w-[600px] mx-auto py-10 px-4">
-      <h2 className="text-2xl font-bold mb-4 text-center">
-        Request Food: {food.name}
+    <div className="max-w-5xl mx-auto py-10 px-4">
+      <h2 className="text-3xl font-bold text-center text-green-700 mb-6">
+        My Food Requests
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="location"
-          placeholder="Your location"
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="reason"
-          placeholder="Why you need this food?"
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="contactNo"
-          placeholder="Your contact number"
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded"
-        >
-          Submit Request
-        </button>
-      </form>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {requests.map((req) => (
+          <div
+            key={req._id}
+            className="border rounded-lg shadow-md p-4 bg-white hover:shadow-lg transition"
+          >
+            <div className="flex gap-4">
+              {req.foodImage && (
+                <img
+                  src={req.foodImage}
+                  alt={req.foodName}
+                  className="w-28 h-28 object-cover rounded"
+                />
+              )}
+              <div>
+                <h3 className="text-lg font-semibold text-green-700">
+                  {req.foodName}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  <strong>Donator:</strong> {req.donatorEmail}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Pickup Location:</strong> {req.location}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Reason:</strong> {req.reason}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Contact:</strong> {req.contactNo}
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Requested on:{" "}
+                  {new Date(req.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default RequestFood;
+export default MyRequests;
