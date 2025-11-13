@@ -4,7 +4,7 @@ import { addFood } from "../../api/foods";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-const AddFood = () => {
+const AddFood = ({ onFoodAdded }) => { // <-- add callback prop
   const { user } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -36,9 +36,12 @@ const AddFood = () => {
           photoURL: user.photoURL || "",
         },
       };
-      await addFood(payload);
+      const addedFood = await addFood(payload);
       toast.success("Food added successfully");
-      navigate("/available-foods");
+
+      if (onFoodAdded) onFoodAdded(addedFood); // <-- trigger refresh
+
+      navigate("/manage-foods");
     } catch (err) {
       console.error(err);
       toast.error("Failed to add food");
@@ -66,7 +69,7 @@ const AddFood = () => {
           name="image"
           value={form.image}
           onChange={handleChange}
-          placeholder="Image URL (use imgbb link)"
+          placeholder="Image URL"
           required
           className="input input-bordered w-full"
         />
