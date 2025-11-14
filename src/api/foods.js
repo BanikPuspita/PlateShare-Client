@@ -1,4 +1,4 @@
-// src/api/foods.js
+
 import { getAuth } from "firebase/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
