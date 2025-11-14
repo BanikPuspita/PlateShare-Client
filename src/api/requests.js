@@ -1,4 +1,4 @@
-
+// src/api/requests.js
 import { getAuth } from "firebase/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -6,7 +6,8 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 async function getToken() {
   const auth = getAuth();
   const user = auth.currentUser;
-  return user ? await user.getIdToken() : null;
+  if (!user) return null;
+  return await user.getIdToken();
 }
 
 async function requestJSON(url, options = {}) {
@@ -26,7 +27,10 @@ async function requestJSON(url, options = {}) {
 }
 
 export const requestFood = (data) =>
-  requestJSON("/api/requests", { method: "POST", body: JSON.stringify(data) });
+  requestJSON("/api/requests", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 
 export const getMyRequests = () => requestJSON("/api/requests/my");
 
