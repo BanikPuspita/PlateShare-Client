@@ -2,8 +2,8 @@
 
 ## Live URLs  
 
-🔹 **Client (Frontend):** [](#)  
-🔹 **Server (Backend API):** [](#)
+🔹 **Client (Frontend):** [https://plate-share-website-assignment.netlify.app/](#)  
+🔹 **Server (Backend API):** [https://plate-share-server-chi.vercel.app/](#)
 
 ---
 
