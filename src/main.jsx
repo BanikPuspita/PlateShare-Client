@@ -21,78 +21,35 @@ import NotFound from "./components/NotFound/NotFound.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout></MainLayout>,
+    element: <MainLayout />,
     children: [
-      {
-        path: "/",
-        element: <Home></Home>,
-      },
-      {
-        path: "/register",
-        element: <Register></Register>,
-      },
-      {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "*",
-        element: <NotFound></NotFound>
-      },
-      {
-        path: "/available-foods",
-        element: <AvailableFoods></AvailableFoods>,
-      },
+      { path: "/", element: <Home /> },
+      { path: "/register", element: <Register /> },
+      { path: "/login", element: <Login /> },
+      { path: "/available-foods", element: <AvailableFoods /> },
       {
         path: "/food/:id",
-        element: (
-          <PrivateRoute>
-            <FoodDetails></FoodDetails>
-          </PrivateRoute>
-        ),
+        element: <PrivateRoute><FoodDetails /></PrivateRoute>
       },
       {
         path: "/add-food",
-        element: (
-          <PrivateRoute>
-            <AddFood></AddFood>
-          </PrivateRoute>
-        ),
+        element: <PrivateRoute><AddFood /></PrivateRoute>
       },
       {
         path: "/update-food/:id",
-        element: (
-          <PrivateRoute>
-            <UpdateFood></UpdateFood>
-          </PrivateRoute>
-        ),
+        element: <PrivateRoute><UpdateFood /></PrivateRoute>
       },
       {
         path: "/my-requests",
-        element: (
-          <PrivateRoute>
-            <MyRequests></MyRequests>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "/request/:id",
-        element: (
-          <PrivateRoute>
-            <RequestFood></RequestFood>
-          </PrivateRoute>
-        ),
+        element: <PrivateRoute><MyRequests /></PrivateRoute>
       },
       {
         path: "/manage-foods",
-        element: (
-          <PrivateRoute>
-            <ManageFoods></ManageFoods>
-          </PrivateRoute>
-        ),
+        element: <PrivateRoute><ManageFoods /></PrivateRoute>
       },
-    ],
-  },
+      { path: "*", element: <NotFound /> }
+    ]
+  }
 ]);
 
 createRoot(document.getElementById("root")).render(

@@ -4,6 +4,8 @@ import { getMyFoods, deleteFood } from "../../api/foods";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Loader from "../Loader/Loader";
+import Swal from "sweetalert2";
+
 
 const ManageFoods = () => {
   const { user } = useAuth();
@@ -15,8 +17,8 @@ const ManageFoods = () => {
     try {
       const mine = await getMyFoods();
       setFoods(mine);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      toast.error("Failed to load foods");
     } finally {
       setLoading(false);
     }
@@ -27,67 +29,57 @@ const ManageFoods = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this food?")) return;
+    const result = await Swal.fire({
+      title: "Delete Food?",
+      text: "This cannot be undone!",
+      icon: "warning",
+      showCancelButton: true,
+    });
+    if (!result.isConfirmed) return;
     try {
       await deleteFood(id);
-      toast.success("Deleted successfully!");
+      toast.success("Deleted!");
       fetchMyFoods();
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to delete food");
+    } catch {
+      toast.error("Delete failed");
     }
   };
 
-  if (loading) return <Loader></Loader>;
+  if (loading) return <Loader />;
+  if (!foods.length) return <p className="text-center py-20 text-gray-500">No foods added yet.</p>;
 
   return (
-    <section className="max-w-3xl mx-auto py-32 px-4">
-      <h2 className="text-3xl font-bold text-primary mb-8 text-center">
-        Manage My Foods
-      </h2>
-      {foods.length === 0 ? (
-        <p className="text-center text-gray-500">No foods found.</p>
-      ) : (
-        <div className="grid md:grid-cols-2 gap-6">
-          {foods.map((food) => (
-            <div
-              key={food._id}
-              className="bg-base-100 border border-gray-100 shadow-md rounded-2xl overflow-hidden"
-            >
-              <div className="flex gap-4 p-4">
-                <img
-                  src={food.image}
-                  alt={food.name}
-                  className="w-28 h-20 object-cover rounded-lg"
-                />
-                <div className="flex flex-col justify-between">
-                  <h3 className="font-semibold text-lg text-gray-800">
-                    {food.name}
-                  </h3>
-                  <p className="text-sm text-gray-600">Qty: {food.quantityText}</p>
-                  <p className="text-sm text-gray-600">
-                    Pickup: {food.pickupLocation}
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-3 px-4 pb-4">
-                <button
-                  className="btn btn-primary flex-1"
-                  onClick={() => navigate(`/update-food/${food._id}`)}
-                >
-                  Update
-                </button>
-                <button
-                  className="btn btn-error flex-1"
-                  onClick={() => handleDelete(food._id)}
-                >
-                  Delete
-                </button>
-              </div>
+    <section className="max-w-4xl mx-auto py-16 px-4">
+      <h2 className="text-3xl font-bold text-primary text-center mb-8">Manage My Foods</h2>
+      <div className="grid md:grid-cols-2 gap-6">
+        {foods.map((food) => (
+          <div key={food._id} className="bg-white rounded-2xl shadow-md p-4 flex gap-4">
+            <img src={food.image} alt={food.name} className="w-24 h-24 object-cover rounded-lg" />
+            <div className="flex-1">
+              <h3 className="font-bold text-lg">{food.name}</h3>
+              <p className="text-sm text-gray-600">{food.quantityText}</p>
+              <p className="text-sm text-gray-600">Location: {food.pickupLocation}</p>
+              <p className="text-xs text-gray-500">
+                Exp: {new Date(food.expireDate).toLocaleDateString()}
+              </p>
             </div>
-          ))}
-        </div>
-      )}
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => navigate(`/update-food/${food._id}`)}
+                className="btn btn-primary btn-sm"
+              >
+                Update
+              </button>
+              <button
+                onClick={() => handleDelete(food._id)}
+                className="btn btn-error btn-sm"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
