@@ -1,4 +1,3 @@
-// src/api/foods.js
 import { getAuth } from "firebase/auth";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -42,11 +41,9 @@ async function requestJSON(url, options = {}) {
   return res.json();
 }
 
-// PUBLIC ENDPOINTS (NO TOKEN NEEDED)
 export const getAvailableFoods = () => requestJSON("/api/foods");
 export const getFeaturedFoods = () => requestJSON("/api/foods/featured");
 
-// PROTECTED ENDPOINTS (TOKEN SENT AUTOMATICALLY)
 export const getFoodById = (id) => requestJSON(`/api/foods/${id}`);
 export const addFood = (data) =>
   requestJSON("/api/foods", {

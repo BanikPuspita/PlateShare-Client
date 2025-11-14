@@ -20,7 +20,7 @@ const MyRequests = () => {
         }
 
         const token = await user.getIdToken();
-        console.log("Token:", token); // Log token
+        console.log("Token:", token); 
 
         const res = await fetch("https://plate-share-server-chi.vercel.app/api/requests/my", {
           headers: {
@@ -29,13 +29,13 @@ const MyRequests = () => {
         });
 
         if (!res.ok) {
-          console.error("Failed to fetch requests:", res.statusText); // Log response status
+          console.error("Failed to fetch requests:", res.statusText); 
           throw new Error("Failed to fetch requests");
         }
 
         const data = await res.json();
         setRequests(data);
-        console.log("Fetched Requests:", data); // Log requests data
+        console.log("Fetched Requests:", data); 
       } catch (error) {
         console.error("Error fetching requests:", error);
         alert("Failed to load your requests.");

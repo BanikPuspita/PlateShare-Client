@@ -14,7 +14,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
 
-  // Redirect back to the page user came from, or home if not available
   const from = location.state?.from?.pathname || "/";
 
   const handleChange = (e) =>
@@ -25,7 +24,7 @@ const Login = () => {
     try {
       await login(form.email, form.password);
       toast.success("Logged in successfully");
-      navigate(from, { replace: true }); // redirect back
+      navigate(from, { replace: true }); 
     } catch (err) {
       toast.error(err.message);
       setLoginError(err.message);
@@ -37,7 +36,7 @@ const Login = () => {
     try {
       await googleSignIn();
       toast.success("Logged in successfully");
-      navigate(from, { replace: true }); // redirect back
+      navigate(from, { replace: true }); 
     } catch (err) {
       console.log(err.message);
       toast.error(err.message);

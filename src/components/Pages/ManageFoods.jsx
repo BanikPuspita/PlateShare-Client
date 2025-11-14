@@ -49,7 +49,7 @@ const ManageFoods = () => {
   if (!foods.length) return <p className="text-center py-20 text-gray-500">No foods added yet.</p>;
 
   return (
-    <section className="max-w-4xl mx-auto py-16 px-4">
+    <section className="max-w-4xl mx-auto py-36 px-4">
       <h2 className="text-3xl font-bold text-primary text-center mb-8">Manage My Foods</h2>
       <div className="grid md:grid-cols-2 gap-6">
         {foods.map((food) => (
